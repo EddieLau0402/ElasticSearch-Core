@@ -103,6 +103,8 @@ class Search
         if (is_numeric($this->size)) $body['size'] = intval($this->size);
         if ($this->sort) $body['sort'] = $this->sort;
 
+        if (!empty($this->source)) $body['_source'] = $this->source;
+
         if ($this->query) $body['query'] = $this->query;
 
         if ($this->aggs) {
