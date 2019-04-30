@@ -1,6 +1,8 @@
 <?php
 namespace Eddie\ElasticSearch;
 
+use function GuzzleHttp\Psr7\str;
+
 class Query
 {
 //    [
@@ -43,6 +45,73 @@ class Query
     }
 
 
+    public function __call($method, array $args)
+    {
+        $method = strtolower($method);
+
+        $mapping = [
+            'wherenot' => 'mustNot',
+            'orwhere' => 'should',
+            'where' => 'must',
+        ];
+        foreach ($mapping as $k => $v) {
+            if (substr($method, 0, strlen($k)) === $k) {
+                $type = $v;
+                $symbol = substr($method, strlen($k));
+                break;
+            }
+        }
+//        var_dump(['type' => $type, 'symbol' => $symbol]);
+//        die;
+
+        switch ($symbol) {
+            case 'gt':
+            case 'gte':
+            case 'lt':
+            case 'lte':
+            case 'between':
+                $parmas = ($symbol == 'between') ? $args : [$args[0], $symbol, $args[1]];
+                array_push($this->$type, call_user_func_array([$this, 'getRangeTerm'], $parmas));
+                return $this;
+
+            default:
+                break;
+        }
+    }
+
+    protected function getRangeTerm()
+    {
+        // Sample :
+        // getRangeTerm($field, 'gt|lt|gte|lte', $val)
+        // getRangeTerm($field, [$min, $max])
+
+        $args = func_get_args();
+        switch (count($args)) {
+            case 2:
+                list($field, $val) = $args;
+                return [
+                    'range' => [
+                        $field => ['gte' => $val[0], 'lte' => $val[1]]
+                    ]
+                ];
+                break;
+
+            case 3:
+                list($field, $symbol, $val) = $args;
+                return [
+                    'range' => [
+                        $field => [$symbol => $val]
+                    ]
+                ];
+                break;
+
+            default:
+                throw new \Exception('illegal');
+                break;
+        }
+    }
+
+
     public function where()
     {
         $args = func_get_args();
@@ -53,14 +122,14 @@ class Query
     public function orWhere()
     {
         $args = func_get_args();
-        array_unshift($args, 'must');
+        array_unshift($args, 'should');
         return call_user_func_array([$this, 'setParam'], $args);
     }
 
     public function whereNot()
     {
         $args = func_get_args();
-        array_unshift($args, 'must');
+        array_unshift($args, 'mustNot');
         return call_user_func_array([$this, 'setParam'], $args);
     }
 
@@ -79,8 +148,6 @@ class Query
 
     protected function setParam($type, $param)
     {
-        $type = strtolower($type);
-
         $args = func_get_args();
         array_shift($args);
 

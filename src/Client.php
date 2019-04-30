@@ -75,6 +75,11 @@ class Client
         return $this;
     }
 
+    public function createIndex($index, array $option = [])
+    {
+        //
+    }
+
     public function indexExists($index = '')
     {
         if (!empty($index)) $this->setIndex($index);
