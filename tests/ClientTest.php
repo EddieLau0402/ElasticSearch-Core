@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Eddie\ElasticSearch\Tests;
+namespace Eddie\ElasticSearchCore\Tests;
 
-use Eddie\ElasticSearch\Client;
+use Eddie\ElasticSearchCore\Client;
 use PHPUnit\Framework\TestCase;
 
 require_once __DIR__.'/../vendor/autoload.php';

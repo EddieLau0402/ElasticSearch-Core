@@ -1,5 +1,5 @@
 <?php
-namespace Eddie\ElasticSearch;
+namespace Eddie\ElasticSearchCore;
 
 class Search
 {
@@ -21,7 +21,7 @@ class Search
     protected $sort;
 
 
-    public function __construct(\Eddie\ElasticSearch\Client $client, $query = null, array $option = [])
+    public function __construct(\Eddie\ElasticSearchCore\Client $client, $query = null, array $option = [])
     {
         $this->client = $client;
         $this->setQuery($query);
@@ -77,7 +77,7 @@ class Search
 
             $this->query = $query;
 
-        } elseif (is_object($query) && $query instanceof \Eddie\ElasticSearch\Query) {
+        } elseif (is_object($query) && $query instanceof \Eddie\ElasticSearchCore\Query) {
             $this->query = $query->format();
         }
 
@@ -88,7 +88,7 @@ class Search
     {
         if (is_array($aggs)) {
             $this->aggs = $aggs;
-        } elseif (is_object($aggs) && $aggs instanceof \Eddie\ElasticSearch\Aggregation) {
+        } elseif (is_object($aggs) && $aggs instanceof \Eddie\ElasticSearchCore\Aggregation) {
             $this->aggs = $aggs->format();
         }
         return $this;
@@ -108,7 +108,7 @@ class Search
         if ($this->query) $body['query'] = $this->query;
 
         if ($this->aggs) {
-            if ($this->aggs instanceof \Eddie\ElasticSearch\Aggregation) $this->aggs = $this->aggs->format();
+            if ($this->aggs instanceof \Eddie\ElasticSearchCore\Aggregation) $this->aggs = $this->aggs->format();
             $body = array_merge($body, $this->aggs);
         }
 

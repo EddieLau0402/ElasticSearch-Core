@@ -1,10 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace Eddie\ElasticSearch\Tests;
+namespace Eddie\ElasticSearchCore\Tests;
 
-use Eddie\ElasticSearch\Aggregation;
-use Eddie\ElasticSearch\Query;
+use Eddie\ElasticSearchCore\Aggregation;
+use Eddie\ElasticSearchCore\Client;
+use Eddie\ElasticSearchCore\Query;
+use Eddie\ElasticSearchCore\Search;
 use PHPUnit\Framework\TestCase;
 
 require_once __DIR__.'/../vendor/autoload.php';
@@ -38,7 +40,7 @@ class SearchTest extends TestCase
     /**
      * @test
      *
-     * @return \Eddie\ElasticSearch\Search
+     * @return \Eddie\ElasticSearchCore\Search
      */
     public function testCreateSearch()
     {
@@ -49,7 +51,7 @@ class SearchTest extends TestCase
             ->createSearch(null, ['index' => 'social-1-wx_group_logs'])
         ;
 
-        $this->assertInstanceOf(\Eddie\ElasticSearch\Search::class, $search);
+        $this->assertInstanceOf(Search::class, $search);
 
         return $search;
     }
@@ -57,9 +59,9 @@ class SearchTest extends TestCase
     /**
      * @depends testCreateSearch
      *
-     * @param \Eddie\ElasticSearch\Search $search
+     * @param \Eddie\ElasticSearchCore\Search $search
      */
-    public function testSearchWithSimpleQuery(\Eddie\ElasticSearch\Search $search)
+    public function testSearchWithSimpleQuery(Search $search)
     {
         $ret = $search
             //->setQuery([])
@@ -72,9 +74,9 @@ class SearchTest extends TestCase
     /**
      * @depends testCreateSearch
      *
-     * @param \Eddie\ElasticSearch\Search $search
+     * @param \Eddie\ElasticSearchCore\Search $search
      */
-    public function testSearchWithConditionsQuery(\Eddie\ElasticSearch\Search $search)
+    public function testSearchWithConditionsQuery(Search $search)
     {
         $query = new Query();
         $query
@@ -95,9 +97,9 @@ class SearchTest extends TestCase
     /**
      * @depends testCreateSearch
      *
-     * @param \Eddie\ElasticSearch\Search $search
+     * @param \Eddie\ElasticSearchCore\Search $search
      */
-    public function testSearchWithAggregation(\Eddie\ElasticSearch\Search $search)
+    public function testSearchWithAggregation(Search $search)
     {
         $query = new Query();
         $query
@@ -124,9 +126,9 @@ class SearchTest extends TestCase
     /**
      * @depends testCreateSearch
      *
-     * @param \Eddie\ElasticSearch\Search $search
+     * @param \Eddie\ElasticSearchCore\Search $search
      */
-    public function testSearchWithSubAggregation(\Eddie\ElasticSearch\Search $search)
+    public function testSearchWithSubAggregation(Search $search)
     {
         $query = new Query();
         $query
@@ -159,7 +161,7 @@ class SearchTest extends TestCase
     private function createClient()
     {
         if (!$this->client) {
-            $this->client = new \Eddie\ElasticSearch\Client([
+            $this->client = new Client([
                 'hosts' => $this->hosts
             ]);
         }

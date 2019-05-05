@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Eddie\ElasticSearch\Tests;
+namespace Eddie\ElasticSearchCore\Tests;
 
 require_once __DIR__.'/../vendor/autoload.php';
 
-use Eddie\ElasticSearch\Query;
+use Eddie\ElasticSearchCore\Query;
 use PHPUnit\Framework\TestCase;
 
 class QueryTest extends TestCase

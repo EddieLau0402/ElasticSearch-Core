@@ -1,5 +1,5 @@
 {
-    "name": "eddie/elastic-search",
+    "name": "eddie/elastic-search-core",
     "license": "MIT",
     "authors": [
         {
@@ -17,12 +17,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Eddie\\ElasticSearch\\": "src/"
+            "Eddie\\ElasticSearchCore\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Eddie\\ElasticSearch\\Tests\\": "tests/"
+            "Eddie\\ElasticSearchCore\\Tests\\": "tests/"
         }
     },
     "repositories": {

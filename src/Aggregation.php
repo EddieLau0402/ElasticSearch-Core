@@ -1,5 +1,5 @@
 <?php
-namespace Eddie\ElasticSearch;
+namespace Eddie\ElasticSearchCore;
 
 class Aggregation
 {
@@ -96,11 +96,11 @@ class Aggregation
         if (!empty($this->subAggs)) {
             $aggs = [];
             foreach ($this->subAggs ?? [] as $subAgg) {
-                if ( $subAgg instanceof \Eddie\ElasticSearch\Aggregation ) {
+                if ( $subAgg instanceof \Eddie\ElasticSearchCore\Aggregation ) {
                     $aggs = array_merge($aggs, $subAgg->format()['aggs']);
                 }
             }
-            $ret['aggs'][$this->alias]['aggs'] = $aggs;
+            if (!empty($aggs)) $ret['aggs'][$this->alias]['aggs'] = $aggs;
         }
 
         return $ret;

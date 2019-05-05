@@ -1,5 +1,5 @@
 <?php
-namespace Eddie\ElasticSearch;
+namespace Eddie\ElasticSearchCore;
 
 use Elasticsearch\ClientBuilder;
 
