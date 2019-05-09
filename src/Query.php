@@ -146,6 +146,20 @@ class Query
         ];
     }
 
+    /**
+     * Clean conditions
+     *
+     * @return $this
+     */
+    public function flush()
+    {
+        $this->filter = [];
+        $this->must = [];
+        $this->mustNot = [];
+        $this->should = [];
+        return $this;
+    }
+
     protected function setParam($type, $param)
     {
         $args = func_get_args();
