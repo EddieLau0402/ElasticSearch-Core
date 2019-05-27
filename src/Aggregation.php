@@ -36,13 +36,14 @@ class Aggregation
      */
     protected static $bucketTypes = [
         'avg', // 求平均
-        'cardinality', // 唯一值
+        'cardinality', // 去重统计, 相当于SQL中的: distinct count
         'extended_stats', // 其他属性,包括: 最大/最小/方差 等
         'geo_bounds', // 坐标
         'geo_centroid', // 中心点
         'max', // 最大值
         'min', // 最小值
-        'terms', //
+        'terms', // 分组
+        'sum', // 求和
     ];
 
 
@@ -137,9 +138,29 @@ class Aggregation
         return $this->setAgg('terms', $field, $alias, $option);
     }
 
+    /**
+     * Alias of "setCardinality"
+     *
+     * @author Eddie
+     *
+     * @param $field
+     * @param string $alias
+     * @param array|null $option
+     * @return Aggregation
+     */
+    public function distinct($field, $alias = '', array $option = null)
+    {
+        return $this->setCardinality($field, $alias, $option);
+    }
+
     public function setCardinality($field, $alias = '', array $option = null)
     {
         return $this->setAgg('cardinality', $field, $alias, $option);
+    }
+
+    public function setSum($field, $alias = '', array $option = null)
+    {
+        return $this->setAgg('sum', $field, $alias, $option);
     }
 
 }
