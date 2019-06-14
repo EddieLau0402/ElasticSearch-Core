@@ -74,6 +74,10 @@ class Query
                 array_push($this->$type, call_user_func_array([$this, 'getRangeTerm'], $parmas));
                 return $this;
 
+            case 'has':
+                array_push($this->$type, call_user_func_array([$this, 'getExistsTerm'], $args));
+                return $this;
+
             default:
                 break;
         }
@@ -111,6 +115,15 @@ class Query
         }
     }
 
+    protected function getExistsTerm()
+    {
+        $args = func_get_args();
+        return [
+            'exists' => [
+                'field' => $args[0]
+            ]
+        ];
+    }
 
     public function where()
     {

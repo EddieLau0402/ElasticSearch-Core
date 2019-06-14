@@ -171,4 +171,33 @@ class QueryTest extends TestCase
         $this->assertArrayHasKey('gte', $ret['bool']['should'][0]['range'][$field]);
         $this->assertArrayHasKey('lte', $ret['bool']['should'][0]['range'][$field]);
     }
+
+    /**
+     * @test
+     *
+     * @author Eddie
+     */
+    public function testMakeQueryHas()
+    {
+        $field = 'name';
+
+        $query = new Query();
+
+        $ret = $query
+            ->whereHas($field)
+            ->orWhereHas($field)
+            ->whereNotHas($field)
+            ->format()
+        ;
+
+
+        $this->assertArrayHasKey('exists', $ret['bool']['must'][0]);
+        $this->assertEquals($ret['bool']['must'][0]['exists']['field'], $field);
+
+        $this->assertArrayHasKey('exists', $ret['bool']['must_not'][0]);
+        $this->assertEquals($ret['bool']['must_not'][0]['exists']['field'], $field);
+
+        $this->assertArrayHasKey('exists', $ret['bool']['should'][0]);
+        $this->assertEquals($ret['bool']['should'][0]['exists']['field'], $field);
+    }
 }
