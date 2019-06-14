@@ -200,4 +200,35 @@ class QueryTest extends TestCase
         $this->assertArrayHasKey('exists', $ret['bool']['should'][0]);
         $this->assertEquals($ret['bool']['should'][0]['exists']['field'], $field);
     }
+
+    /**
+     * @test
+     *
+     * @author Eddie
+     */
+    public function testMakeQueryMultiHas()
+    {
+        $fields = ['name', 'age', 'gender'];
+
+        $query = new Query();
+
+        $ret = $query
+            ->whereHas($fields)
+            ->orWhereHas($fields)
+            ->whereNotHas($fields)
+            ->format()
+        ;
+
+
+        foreach ($fields as $i => $field) {
+            $this->assertArrayHasKey('exists', $ret['bool']['must'][$i]);
+            $this->assertEquals($ret['bool']['must'][$i]['exists']['field'], $field);
+
+            $this->assertArrayHasKey('exists', $ret['bool']['must_not'][$i]);
+            $this->assertEquals($ret['bool']['must_not'][$i]['exists']['field'], $field);
+
+            $this->assertArrayHasKey('exists', $ret['bool']['should'][$i]);
+            $this->assertEquals($ret['bool']['should'][$i]['exists']['field'], $field);
+        }
+    }
 }

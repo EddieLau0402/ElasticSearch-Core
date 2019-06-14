@@ -75,7 +75,10 @@ class Query
                 return $this;
 
             case 'has':
-                array_push($this->$type, call_user_func_array([$this, 'getExistsTerm'], $args));
+                $args = is_array($args[0]) ? $args[0] : [$args[0]];
+                foreach ($args ?? [] as $arg) {
+                    array_push($this->$type, call_user_func_array([$this, 'getExistsTerm'], [$arg]));
+                }
                 return $this;
 
             default:
